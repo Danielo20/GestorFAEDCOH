@@ -1,0 +1,82 @@
+﻿@model GestorFAEDCOH.Models.Base_de_datos.ETAPA
+@{
+    ViewBag.Title = "Editar Etapa";
+    Layout = "~/Views/Shared/Layout.cshtml";
+    List<GestorFAEDCOH.Models.Base_de_datos.TIPO_ACTIVIDAD> tipo_actividad = ViewBag.Tipo_Actividad;
+}
+
+<div class="row" style="padding: 10px;">
+
+    @using (Html.BeginForm("Guardar", "Etapa", FormMethod.Post, new { id = "frm-etapa" }))
+    {
+        string p = "";
+        @Html.HiddenFor(x => Model.ID_ETAPA)
+        @Html.HiddenFor(x => Model.ESTADO)
+
+        if (Model.ESTADO == true)
+        {
+            p = "Activo";
+        }
+        else
+        {
+            p = "Inactivo";
+        }
+
+
+        <div class="form">
+
+            <div class="row card-box">
+                <h4 class="header-title"><i class="fa fa-pencil"></i> Editar Etapa de @Model.NOMBRE</h4>
+            </div>
+
+            <div class="row card-box">
+                <h4 class="header-title m-t-0 m-b-30">Datos de generales</h4>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        @Html.Label("Nombre", new { @class = "control-label" })
+                        @Html.TextBoxFor(x => Model.NOMBRE, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(x => Model.NOMBRE, null, new { @class = "label label-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="row card-box">
+                <h4 class="header-title m-t-0 m-b-30">Otros datos</h4>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.Label("Tipo de actividad", new { @class = "control-label" })
+                        <select name="ID_TIPO_ACTIVIDAD" id="ID_TIPO_ACTIVIDAD" class="form-control">
+
+                            @foreach (var metodo in tipo_actividad)
+                            {
+                                if (Model.ID_TIPO_ACTIVIDAD != metodo.ID_TIPO_ACTIVIDAD)
+                                {
+                                    <option value="@metodo.ID_TIPO_ACTIVIDAD">Tipo_Actividad @metodo.DESCRIPCION</option>
+                                }
+                                else
+                                {
+                                    <option selected value="@metodo.ID_TIPO_ACTIVIDAD">Etapa @metodo.DESCRIPCION</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.Label("ESTADO")
+                        <input type="text" class="form-control" value="@p" readonly>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default waves-effect" data-dismiss="modal" onclick="goBack()">Cerrar</button>
+            <button type="submit" class="btn btn-custom waves-effect waves-light">Guardar Cambios</button>
+        </div>
+    }
+
+</div>
